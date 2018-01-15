@@ -8,3 +8,8 @@ addons:
 
 jdk:
   - oraclejdk8
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
