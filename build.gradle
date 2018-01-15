@@ -1,0 +1,66 @@
+/**
+ * @author Hung Nguyen (hungng@seas.upenn.edu)
+ */
+
+group 'edu.upenn.cis.precise.openicelite'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+defaultTasks 'build'
+
+wrapper {
+    gradleVersion = '4.3.1'
+}
+
+ext {
+    SOURCE_COMPATIBILITY = 1.8
+    TARGET_COMPATIBILITY = 1.8
+}
+
+ext { VERSION_NUMBER = '1.0.0' }
+if (null != System.properties['VERSION_NUMBER']) {
+    ext { VERSION_NUMBER = System.properties['VERSION_NUMBER'] }
+}
+
+allprojects {
+    sourceCompatibility = SOURCE_COMPATIBILITY
+    targetCompatibility = TARGET_COMPATIBILITY
+    version = VERSION_NUMBER
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+task createpom << {
+    pom {
+        project {
+            groupId 'edu.upenn.cis.precise'
+            artifactId 'openicelite'
+            version VERSION_NUMBER
+
+            inceptionYear '2017'
+            licenses {
+                license {
+                    name 'Simplified BSD License'
+                    url 'http://www.opensource.org/licenses/bsd-license.php'
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+}
+
+task javadoc(overwrite: true, type: Javadoc) {
+    destinationDir = file('docs')
+    title = "OpenICE-lite Core $VERSION_NUMBER API"
+    options.author true
+
+    subprojects.each { proj ->
+        proj.tasks.withType(Javadoc).each { javadocTask ->
+            source += javadocTask.source
+            classpath += javadocTask.classpath
+            excludes += javadocTask.excludes
+            include "edu/upenn/cis/precise/openicelite/**/*"
+        }
+    }
+}

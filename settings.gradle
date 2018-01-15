@@ -1,0 +1,5 @@
+/**
+ * @author Hung Nguyen (hungng@seas.upenn.edu)
+ */
+
+rootProject.name = 'openice-lite'
