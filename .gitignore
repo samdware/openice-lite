@@ -1,7 +1,9 @@
 # -- Specific for this project
+.idea/
 logs/
 storage/
 *.db
+*.iml
 
 # -- Java
 *.class

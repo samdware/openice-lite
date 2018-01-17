@@ -32,6 +32,38 @@ allprojects {
     }
 }
 
+project(':drivers') {
+    subprojects {
+        apply plugin: 'java'
+        defaultTasks 'build'
+
+        dependencies {
+            // Logging
+            compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
+            compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
+
+            // JSON
+            compile group: 'org.json', name: 'json', version: '20170516'
+        }
+    }
+}
+
+project(':middleware') {
+    subprojects {
+        apply plugin: 'java'
+        defaultTasks 'build'
+
+        dependencies {
+            // Logging
+            compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
+            compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
+
+            // JSON
+            compile group: 'org.json', name: 'json', version: '20170516'
+        }
+    }
+}
+
 task createpom << {
     pom {
         project {

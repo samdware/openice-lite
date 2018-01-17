@@ -3,3 +3,7 @@
  */
 
 rootProject.name = 'openice-lite'
+
+// Core
+include ':drivers:core'
+include ':middleware:core'
