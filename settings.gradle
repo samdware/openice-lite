@@ -10,3 +10,6 @@ include ':middleware:core'
 
 // Distributed Framework
 include ':middleware:mqtt'
+
+// Application
+include ':apps'
