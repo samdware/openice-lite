@@ -4,22 +4,12 @@ import edu.upenn.cis.precise.openicelite.drivers.core.DeviceInfo;
 import edu.upenn.cis.precise.openicelite.drivers.core.IDriver;
 import edu.upenn.cis.precise.openicelite.drivers.core.IDriverCallback;
 import edu.upenn.cis.precise.openicelite.middleware.core.IMiddleware;
-import edu.upenn.cis.precise.openicelite.middleware.core.ShutdownHook;
 import edu.upenn.cis.precise.openicelite.middleware.mqtt.Dongle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Properties;
-import java.util.UUID;
 
 /**
  * Lightweight application to collect data from medical device and publish
@@ -29,12 +19,7 @@ import java.util.UUID;
  *
  * @author Hung Nguyen (hungng@seas.upenn.edu)
  */
-public class AbstractMonitor {
-  private static final String DONGLE_ID = UUID.randomUUID().toString();
-  private static final String PROPERTIES_FILE_NAME = "device.properties";
-
-  private static final Logger logger = LogManager.getLogger(AbstractMonitor.class);
-
+public abstract class AbstractMonitor {
   // Dongle configuration
   private final String dongleId;
   private DeviceInfo deviceInfo;
@@ -43,6 +28,7 @@ public class AbstractMonitor {
   private IMiddleware middleware;
   private IDriver driver;
 
+  /* Sample coding block for main application
   public static void main(String[] args) {
     logger.info("Starting Masimo Dongle...");
 
@@ -101,7 +87,7 @@ public class AbstractMonitor {
     }
 
     // Start Dongle
-    AbstractMonitor monitor = new AbstractMonitor(dongleId, deviceInfo, options);
+    Monitor monitor = new Monitor(dongleId, deviceInfo, options);
 
     try {
       monitor.startMiddleware();
@@ -111,15 +97,15 @@ public class AbstractMonitor {
       System.exit(-1);
     }
 
-    /* Sample code block to initialize driver
     try {
+      driver = new Driver();
       monitor.startDriver(driver);
     } catch (Exception ex) {
       logger.error("Failed to start driver!", ex);
       System.exit(-1);
     }
-    */
   }
+  */
 
   /**
    * Monitor constructor
