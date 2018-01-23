@@ -12,6 +12,8 @@ wrapper {
     gradleVersion = '4.3.1'
 }
 
+libsDirName = "${projectDir}/jars/"
+
 ext {
     SOURCE_COMPATIBILITY = 1.8
     TARGET_COMPATIBILITY = 1.8
@@ -109,4 +111,20 @@ task javadoc(overwrite: true, type: Javadoc) {
             include "edu/upenn/cis/precise/openicelite/**/*"
         }
     }
+}
+
+task jarall(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'OpenICE-lite Core',
+                'Implementation-Version': project.version
+    }
+    baseName = 'openice-lite-core'
+    subprojects.each { proj ->
+        from proj.sourceSets.main.output.classesDir
+        from proj.sourceSets.main.output.resourcesDir
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    with jar
 }

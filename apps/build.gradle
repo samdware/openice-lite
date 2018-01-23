@@ -7,8 +7,6 @@ group 'edu.upenn.cis.precise.openicelite.apps'
 apply plugin: 'java'
 defaultTasks 'build'
 
-libsDirName = "${projectDir}/jars/"
-
 dependencies {
     compile project(':drivers:core')
     compile project(':middleware:mqtt')
