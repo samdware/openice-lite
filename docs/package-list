@@ -1,6 +1,0 @@
-edu.upenn.cis.precise.openicelite.apps
-edu.upenn.cis.precise.openicelite.drivers.core
-edu.upenn.cis.precise.openicelite.middleware.core
-edu.upenn.cis.precise.openicelite.middleware.mqtt
-edu.upenn.cis.precise.openicelite.middleware.mqtt.type
-edu.upenn.cis.precise.openicelite.middleware.mqtt.util

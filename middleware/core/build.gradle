@@ -1,9 +1,0 @@
-/**
- * @author Hung Nguyen (hungng@seas.upenn.edu)
- */
-
-group 'edu.upenn.cis.precise.openicelite.middleware'
-
-dependencies {
-    compile project(':drivers:core')
-}
