@@ -8,6 +8,7 @@ plugins {
 }
 
 group 'edu.upenn.cis.precise.openicelite'
+defaultTasks 'shadowJar'
 
 wrapper {
     gradleVersion = '4.8'
@@ -60,8 +61,8 @@ shadowJar {
     classifier = null
 }
 
-task javadoc(overwrite: true, type: Javadoc) {
-    destinationDir = file('docs')
+task javadoc(overwrite: true, type: Javadoc, group: 'documentation') {
+    destinationDir = file("docs")
     title = "OpenICE-lite $VERSION_NUMBER API"
     options.author true
 

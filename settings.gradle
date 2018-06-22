@@ -6,7 +6,10 @@ rootProject.name = 'openice-lite'
 
 // APIs
 include ':iomt:api'
+include ':conn_manager:api'
 include ':middleware:api'
+
+include ':core_apps:sysmon:api'
 
 // Middleware
 include ':middleware:mqtt'
