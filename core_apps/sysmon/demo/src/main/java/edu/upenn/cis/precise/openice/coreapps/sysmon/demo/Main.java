@@ -1,7 +1,11 @@
 package edu.upenn.cis.precise.openice.coreapps.sysmon.demo;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.DataListener;
 import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.ISysmon;
@@ -31,7 +35,8 @@ public class Main extends Application {
 	ConnectionDetailPane connectionPane;
 	ChannelDetailPane channelPane;
 	
-	List<Info> connections, channels;
+	List<Info> connections;
+	List<Info> channels;
     ListView<String> connectionList, channelList, topicList;
 	
 	@Override
@@ -65,6 +70,15 @@ public class Main extends Application {
 	}
 	
 	private void sysmonSetup() {
+	    File configFile = new File("core_apps/sysmon/demo/sysmon.properties");
+	    Properties p = new Properties();
+	    try {
+            p.load(new FileReader(configFile));
+        } catch (IOException e) {
+	        System.out.println(configFile.getAbsolutePath());
+	        e.printStackTrace();
+        }
+        sysmon.init(p);
 		sysmon.addMonitor("connections");
 		sysmon.addMonitor("channels");
 		sysmon.addListener("connections", new DataListener() {
@@ -72,7 +86,7 @@ public class Main extends Application {
 			public void onNotAvailable() {}
 			@Override
 			public void handleData(List<Info> data) {
-				connections = data;
+                    connections = data;
 				ObservableList<String> names = extractNames(data);
 				Platform.runLater(()->connectionList.setItems(names));
 			}

@@ -194,7 +194,7 @@ public class ConnHandler {
 			// TODO: implement
 		}
 		
-		private void notifyListeners(String metric, List<? extends Info> response) {
+		private void notifyListeners(String metric, List<Info> response) {
 			if (dataListeners.containsKey(metric)) {
 				for (DataListener i : dataListeners.get(metric)) {
 					i.handleData(response);

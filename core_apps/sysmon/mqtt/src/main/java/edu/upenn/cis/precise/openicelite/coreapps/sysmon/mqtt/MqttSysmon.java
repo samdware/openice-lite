@@ -16,23 +16,26 @@ public class MqttSysmon implements ISysmon{
             }}
     );
 
-	private HashMap<String, Object> options;
 	private ConnHandler handler;
+	private Properties properties;
 	
 	public MqttSysmon() {
-		init("");
-	}
-	
-	@Override
-	public void init(String configFilePath) {
-		// TODO: read config file
-		options = new HashMap<>();
-		handler = new ConnHandler(5000);
 	}
 
-	/**
-	 * Start querying MQTT broker with registered options.
-	 */
+	public MqttSysmon(Properties properties) {
+	    this.init(properties);
+    }
+
+    /**
+     * @inhertDoc
+     */
+    @Override
+	public void init(Properties properties) {
+	    this.properties = properties;
+        int interval = Integer.parseInt(properties.getProperty("interval", "5000"));
+        handler = new ConnHandler(interval);
+    }
+
 	@Override
 	public void start() {
 		handler.startTimer();
@@ -44,41 +47,26 @@ public class MqttSysmon implements ISysmon{
 	}
 
 	@Override
-	public void setOption(String optionName, Object value) {
-		options.put(optionName, value);
-		
+	public void setOption(String optionName, String value) {
+        properties.setProperty(optionName, value);
 	}
 
 	@Override
-	public Object getOption(String optionName) {
-		return options.get(optionName);
+	public String getOption(String optionName) {
+		return properties.getProperty(optionName);
 	}
 	
-	/**
-	 * Start logging a metric
-	 * @param metric The name of the metric to log
-	 */
 	@Override
 	public void addMonitor(String metric) {
 		// TODO: check validity of metric
 		handler.addMonitor(metric);
 	}
 
-	/**
-	 * Start logging a metric
-	 * @param metric The name of the metric to log
-	 */
 	@Override
 	public void addMonitor(Metric metric) {
-		// TODO: check validity of metric
 		addMonitor(enumMap.get(metric));
 	}
 
-	/**
-	 * Attaches a listener to the given metric. 
-	 * Also instantiates monitoring (logging) if the metric isn't already being monitored 
-	 * @param metric The metric 
-	 */
 	@Override
 	public void addListener(String metric, Listener listener) {
 		if (listener instanceof DataListener) {
@@ -88,17 +76,9 @@ public class MqttSysmon implements ISysmon{
 		}
 	}
 
-    /**
-     * Attaches a listener to the given metric.
-     * Also instantiates monitoring (logging) if the metric isn't already being monitored
-     * @param metric The metric
-     */
     @Override
     public void addListener(Metric metric, Listener listener) {
         addListener(enumMap.get(metric), listener);
     }
-	public Object getState(String metric) {
-		return null;
-	}
-	
+
 }

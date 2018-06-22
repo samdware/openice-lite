@@ -3,6 +3,5 @@ group 'edu.upenn.cis.precise.openicelite.coreapps.sysmon'
 dependencies {
     compile project (':core_apps:sysmon:api')
     compile project (':core_apps:sysmon:mqtt')
-    compile project (':core_apps:sysmon:dds')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
