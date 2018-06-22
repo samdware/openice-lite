@@ -4,7 +4,6 @@
 
 plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.4'
-    id 'java'
 }
 
 group 'edu.upenn.cis.precise.openicelite'
@@ -15,16 +14,15 @@ wrapper {
 }
 
 ext {
+    VERSION_NUMBER = '0.1.0'
     SOURCE_COMPATIBILITY = 1.8
     TARGET_COMPATIBILITY = 1.8
 }
 
-ext { VERSION_NUMBER = '1.0.0' }
-if (null != System.properties['VERSION_NUMBER']) {
-    ext { VERSION_NUMBER = System.properties['VERSION_NUMBER'] }
-}
-
 allprojects {
+    apply plugin: 'java'
+    defaultTasks 'build'
+
     sourceCompatibility = SOURCE_COMPATIBILITY
     targetCompatibility = TARGET_COMPATIBILITY
     version = VERSION_NUMBER
@@ -39,9 +37,6 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
-    defaultTasks 'build'
-
     dependencies {
         // Logging
         compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
@@ -65,13 +60,13 @@ task javadoc(overwrite: true, type: Javadoc, group: 'documentation') {
     destinationDir = file("docs")
     title = "OpenICE-lite $VERSION_NUMBER API"
     options.author true
+    include "edu/upenn/cis/precise/openicelite/**/*"
 
     subprojects.each { proj ->
-        proj.tasks.withType(Javadoc).each { javadocTask ->
-            source += javadocTask.source
-            classpath += javadocTask.classpath
-            excludes += javadocTask.excludes
-            include "edu/upenn/cis/precise/openicelite/*"
+        proj.tasks.withType(Javadoc).each { task ->
+            source += task.source
+            classpath += task.classpath
+            excludes += task.excludes
         }
     }
 }

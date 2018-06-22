@@ -22,7 +22,7 @@ dependencies {
     compile group: 'com.h2database', name: 'h2', version: '1.4.197'
 }
 
-task runDongleSimulator(type: JavaExec) {
+task runDongleSimulator(type: JavaExec, group: 'run') {
     classpath sourceSets.main.runtimeClasspath
     main = "edu.upenn.cis.precise.openicelite.middleware.mqtt.DongleSimulator"
 }
