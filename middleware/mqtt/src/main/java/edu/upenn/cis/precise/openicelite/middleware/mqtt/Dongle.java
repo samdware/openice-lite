@@ -68,9 +68,8 @@ public class Dongle implements IMiddleware, MqttCallback {
 
     // Overwritten-able configuration
     // -- MQTT broker address (main and fail-over)
-    private String broker = "ssl://broker1.openice.precise.seas.upenn.edu:8883";
-    private String[] brokers = {"ssl://broker1.openice.precise.seas.upenn.edu:8883",
-            "ssl://broker2.openice.precise.seas.upenn.edu:8883"};
+    private String broker = "tcp://broker.hivemq.com:1883";
+    private String[] brokers = {"tcp://broker.hivemq.com:1883"};
     // -- broker connection timeout (seconds)
     private int connectionTimeout = 10;
     // -- broker connection retry interval (seconds)

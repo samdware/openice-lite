@@ -77,7 +77,7 @@ public class LoggerH2 implements IGracefulShutdown {
         logger.info("Starting H2 Logger...");
 
         // Load configuration
-        ClassLoader loader = DongleSimulator.class.getClassLoader();
+        ClassLoader loader = Dongle.class.getClassLoader();
         URL propResource = loader.getResource(PROPERTIES_FILE_NAME);
         File propFile = new File("./" + PROPERTIES_FILE_NAME);
 
