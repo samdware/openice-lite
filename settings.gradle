@@ -3,3 +3,10 @@
  */
 
 rootProject.name = 'openice-lite'
+
+// APIs
+include ':iomt:api'
+include ':middleware:api'
+
+// Middleware
+include ':middleware:mqtt'
