@@ -5,16 +5,16 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
+apply plugin: 'maven-publish'
 
 group 'edu.upenn.cis.precise.openicelite'
-defaultTasks 'shadowJar'
 
 wrapper {
     gradleVersion = '4.8'
 }
 
 ext {
-    VERSION_NUMBER = '0.1.0'
+    VERSION_NUMBER = '0.1.1'
     SOURCE_COMPATIBILITY = 1.8
     TARGET_COMPATIBILITY = 1.8
 }
@@ -32,28 +32,36 @@ allprojects {
             dirs 'libs'
         }
 
-        mavenCentral()
+        jcenter()
     }
 }
 
 subprojects {
     dependencies {
         // Logging
-        compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
-        compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
+        implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
+        implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
 
         // JSON
-        compile group: 'org.json', name: 'json', version: '20180130'
+        implementation group: 'org.json', name: 'json', version: '20180130'
     }
 }
 
 dependencies {
-    compile subprojects.each { project(it.path) }
+    implementation subprojects.each { project(it.path) }
 }
 
 shadowJar {
     baseName = 'openice-lite'
     classifier = null
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+        }
+    }
 }
 
 task javadoc(overwrite: true, type: Javadoc, group: 'documentation') {

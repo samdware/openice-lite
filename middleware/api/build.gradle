@@ -5,5 +5,5 @@
 group 'edu.upenn.cis.precise.openicelite.middleware'
 
 dependencies {
-    compile project(':iomt:api')
+    implementation project(':iomt:api')
 }
