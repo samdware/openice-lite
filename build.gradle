@@ -1,0 +1,76 @@
+/**
+ * @author Hung Nguyen (hungng@seas.upenn.edu)
+ */
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'java'
+}
+
+group 'edu.upenn.cis.precise.openicelite'
+
+wrapper {
+    gradleVersion = '4.8'
+}
+
+ext {
+    SOURCE_COMPATIBILITY = 1.8
+    TARGET_COMPATIBILITY = 1.8
+}
+
+ext { VERSION_NUMBER = '1.0.0' }
+if (null != System.properties['VERSION_NUMBER']) {
+    ext { VERSION_NUMBER = System.properties['VERSION_NUMBER'] }
+}
+
+allprojects {
+    sourceCompatibility = SOURCE_COMPATIBILITY
+    targetCompatibility = TARGET_COMPATIBILITY
+    version = VERSION_NUMBER
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    defaultTasks 'build'
+
+    dependencies {
+        // Logging
+        compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
+        compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
+
+        // JSON
+        compile group: 'org.json', name: 'json', version: '20180130'
+    }
+}
+
+dependencies {
+    compile subprojects.each { project(it.path) }
+}
+
+shadowJar {
+    baseName = 'openice-lite'
+    classifier = null
+}
+
+task javadoc(overwrite: true, type: Javadoc) {
+    destinationDir = file('docs')
+    title = "OpenICE-lite $VERSION_NUMBER API"
+    options.author true
+
+    subprojects.each { proj ->
+        proj.tasks.withType(Javadoc).each { javadocTask ->
+            source += javadocTask.source
+            classpath += javadocTask.classpath
+            excludes += javadocTask.excludes
+            include "edu/upenn/cis/precise/openicelite/*"
+        }
+    }
+}
