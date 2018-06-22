@@ -1,6 +1,7 @@
 ## OpenICE-lite Core
 
 [![Build Status](https://travis-ci.org/samdware/openice-lite.svg?branch=master)](https://travis-ci.org/samdware/openice-lite)
+[![](https://jitpack.io/v/samdware/openice-lite.svg)](https://jitpack.io/#samdware/openice-lite)
 
 OpenICE-lite is our team's effort to simplify the predecessor implementation, named as OpenICE, toward the goal of plug-and-play medical device interoperability. Incorporating MQTT middleware, OpenICE-lite features light-weight, modularized architecture to provide a framework for the integration of medical devices and applications into closed-loop monitoring or Medical Internet of Things.
 
