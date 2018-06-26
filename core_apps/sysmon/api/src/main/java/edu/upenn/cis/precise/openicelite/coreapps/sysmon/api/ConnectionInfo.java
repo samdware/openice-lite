@@ -8,7 +8,8 @@ package edu.upenn.cis.precise.openicelite.coreapps.sysmon.api;
 public class ConnectionInfo extends Info{
 
 	public static final String[] required = {
-		"name", "channels", "recv_oct_details_rate", "send_oct_details_rate", "ssl"	
+			"time", "name", "username", "state", "ssl", "channels",
+           "recv_rate", "recv_count", "send_rate", "send_count"
 	};
 	
 	public ConnectionInfo() {

@@ -7,19 +7,17 @@ package edu.upenn.cis.precise.openicelite.coreapps.sysmon.api;
  */
 public class ChannelInfo extends Info {
 	
-	public static final String[] required =
-            {
-                    "name", "connection_details_name", "recv_rate", "send_rate",
-                    "message_stats_deliver_get_details_rate",
-                    "message_stats_publish_details_rate", "ssl"
-            };
-	
+	public static final String[] required = {
+			"time", "name", "username", "connection", "state", "publish_rate", "publish_count", "messages_unacknowledged",
+            "deliver_get_rate", "deliver_get_count", "ack_rate", "ack_count", "redeliver_rate", "redeliver_count"
+	};
+
 	public ChannelInfo() {
 		super();
 	}
-	
+
 	@Override
-	public String[] requiredFields() {
-		return required;
-	}
+    public String[] requiredFields() {
+	    return required;
+    }
 }

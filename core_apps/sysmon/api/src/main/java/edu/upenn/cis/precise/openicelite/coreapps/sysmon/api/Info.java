@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Hyun Jung (hyju@seas.upenn.edu)
  */
 public class Info {
-	protected HashMap<String, Object> content;
+	private HashMap<String, Object> content;
 	
 	public Info() {
 		content = new HashMap<>();
@@ -35,6 +35,15 @@ public class Info {
     }
 
     /**
+     * Returns whether this Info contains the specified field.
+     * @param field Name of the field to look for
+     * @return True if this info contains the field; false otherwise.
+     */
+    public boolean containsField(String field) {
+	    return content.containsKey(field);
+    }
+
+    /**
      * Adds a field and a value to the instance. Both the field and the value cannot be null.
      * @param field Name of the field to add
      * @param value Value of the field
@@ -47,7 +56,7 @@ public class Info {
 	}
 
     /**
-     * Returns the value of the field given as a String, or null if the field doesn't exist.
+     * Returns the value of the field given as a String, or an empty string if the field doesn't exist.
      * @param field Name of the field to find
      * @return Value of the field as a string, or null if the field doesn't exist
      */
@@ -55,31 +64,31 @@ public class Info {
 		if (content.containsKey(field)) {
 			return content.get(field).toString();
 		}
-		return null;
+		return "";
 	}
 
     /**
-     * Returns the value of the field given as a long, or null if the field doesn't exist.
+     * Returns the value of the field given as a long, or 0 if the field doesn't exist.
      * @param field Name of the field to find
      * @return value of the field as a Long, or null if the field doesn't exist
      */
-	public Long getAsLong(String field) {
+	public long getAsLong(String field) {
 		if (content.containsKey(field) && (content.get(field) instanceof Long)) {
 			return (Long) content.get(field);
 		}
-		return null;
+		return 0;
 	}
 
     /**
-     * Returns the value of the field given as a double, or null if the field doesn't exist.
+     * Returns the value of the field given as a double, or 0 if the field doesn't exist.
      * @param field Name of the field to find
      * @return value of the field as a double, or null if the field doesn't exist
      */
-	public Double getAsDouble(String field) {
+	public double getAsDouble(String field) {
 		if (content.containsKey(field) && (content.get(field) instanceof Double)) {
 			return (Double) content.get(field);
 		}
-		return null;
+		return 0;
 	}
 
     /**
