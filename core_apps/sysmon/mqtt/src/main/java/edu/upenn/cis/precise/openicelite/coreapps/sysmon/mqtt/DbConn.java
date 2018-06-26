@@ -14,12 +14,16 @@ public class DbConn {
 
     private Connection conn = null;
     private DatabaseMetaData meta = null;
+    private String url;
 
-    protected void connect(String fileName) {
+    protected DbConn(String fileName) {
+        this.url = "jdbc:sqlite:" + fileName;
+    }
+
+    protected void connect() {
         try {
-            String url = "jdbc:sqlite:" + fileName;
             conn = DriverManager.getConnection(url);
-            logger.info("Connection to db established: {}]", fileName);
+            logger.info("Connection to db established: {}]", url);
             meta = conn.getMetaData();
         } catch (SQLException e) {
             logger.error("Error connecting to database ", e);

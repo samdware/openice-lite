@@ -31,9 +31,8 @@ public class MqttSysmon implements ISysmon{
      */
     @Override
 	public void init(Properties properties) {
-	    this.properties = properties;
-        int interval = Integer.parseInt(properties.getProperty("interval", "5000"));
-        handler = new ConnHandler(interval);
+        this.properties = properties;
+        handler = new ConnHandler(properties);
     }
 
 	@Override

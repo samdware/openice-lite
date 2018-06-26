@@ -22,13 +22,15 @@ import com.google.gson.JsonParser;
 public class HttpConn {
 	private static Logger logger = LogManager.getLogger(HttpConn.class);
 	
-	CloseableHttpClient client;
-	String requestAddr = "http://localhost:15672/api/";
+	private CloseableHttpClient client;
+	private String brokerAddr;
+	private int port;
 	
-	public HttpConn() {
+	public HttpConn(String host, int port) {
+		this.brokerAddr = "http://" + host + ":" + port + "/api/";
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
-                new AuthScope("localhost", 15672),
+                new AuthScope(host, port),
                 // TODO: change default credentials
                 new UsernamePasswordCredentials("guest", "guest"));
         client = HttpClients.custom()
@@ -43,7 +45,7 @@ public class HttpConn {
 	 * @throws IOException
 	 */
 	public JsonElement get(String metric) throws IOException {
-		HttpGet getReq = new HttpGet(requestAddr + metric);
+		HttpGet getReq = new HttpGet(brokerAddr + metric);
 		CloseableHttpResponse response1 = client.execute(getReq);
 		StatusLine status = response1.getStatusLine();
 		

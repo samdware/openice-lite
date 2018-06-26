@@ -1,11 +1,7 @@
 package edu.upenn.cis.precise.openicelite.coreapps.sysmon.mqtt;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,39 +20,41 @@ import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.Info;
 public class ConnHandler {
 
     public static final String DB_LOCATION = "logs/metrics.db";
-	
+
 	private static Logger logger = LogManager.getLogger(ConnHandler.class);
-	private static String[] supportedMetrics = {"connections", "channels"};
-	
+
 	private HttpConn conn;
 	private ArrayList<String> metrics;
 	private HashMap<String, ArrayList<EventListener>> eventListeners;
 	private HashMap<String, ArrayList<DataListener>> dataListeners;
 
-	private HashMap<String, List<Info>> cache;
-
     private DbConn dbConn;
 	private long interval;
 	private Timer timer;
-	
-	protected ConnHandler(long interval) {
-		conn = new HttpConn();
-		dbConn = new DbConn();
-		createTables();
-		metrics = new ArrayList<>();
-		eventListeners = new HashMap<>();
-		dataListeners = new HashMap<>();
-		setInterval(interval);
-		cache = new HashMap<>();
-	}
+
+
+	protected ConnHandler(Properties properties) {
+	    String host = properties.getProperty("host", "localhost");
+	    int port = Integer.parseInt(properties.getProperty("port", "15672"));
+	    String dbFile = properties.getProperty("db", "logs/metrics.db");
+	    int interval = Integer.parseInt(properties.getProperty("interval", "5000"));
+
+	    conn = new HttpConn(host, port);
+	    dbConn = new DbConn(dbFile);
+	    createTables();
+	    metrics = new ArrayList<>();
+	    eventListeners = new HashMap<>();
+	    dataListeners = new HashMap<>();
+	    setInterval(interval);
+    }
 
 	private void createTables() {
-		dbConn.connect(DB_LOCATION);
+		dbConn.connect();
 	    dbConn.createConnectionTable();
 	    dbConn.createChannelTable();
 	    dbConn.disconnect();
     }
-	
+
 	/**
 	 * Sets the rate of data collection
 	 * @param interval Interval between each collection, in milliseconds
@@ -68,7 +66,7 @@ public class ConnHandler {
 		this.interval = interval;
 		logger.info("Collection interval changed to {}", interval);
 	}
-	
+
 	/**
 	 * Starts collecting data periodically
 	 */
@@ -77,7 +75,7 @@ public class ConnHandler {
 		timer.scheduleAtFixedRate(new GetDataTask(), 0, interval);
 		logger.info("Started collecting metrics with interval {}", interval);
 	}
-	
+
 	/**
 	 * Stops collecting data
 	 */
@@ -85,7 +83,7 @@ public class ConnHandler {
 		timer.cancel();
 		logger.info("Stopped collecting metrics");
 	}
-	
+
 	/**
 	 * Start monitoring the specified metric.
 	 * Note that the first data will be fetched at the next scheduled request
@@ -108,7 +106,7 @@ public class ConnHandler {
             logger.info("Stopped monitoring {}", metric);
         }
     }
-	
+
 	protected void addDataListener(String metric, DataListener listener) {
 		if (dataListeners.containsKey(metric)) {
 			dataListeners.get(metric).add(listener);
@@ -119,7 +117,7 @@ public class ConnHandler {
 		}
 		logger.info("DataListener attached to {}", metric);
 	}
-	
+
 	protected void addEventListener(String metric, EventListener listener) {
 		if (eventListeners.containsKey(metric)) {
 			eventListeners.get(metric).add(listener);
@@ -143,17 +141,16 @@ public class ConnHandler {
 		}
 	    return InfoParser.parseList(metric, array);
 	}
-	
+
 
 	private class GetDataTask extends TimerTask {
-		
+
 		@Override
 		public void run() {
 		    logger.info("Requesting metrics from broker");
-		    dbConn.connect(DB_LOCATION);
+		    dbConn.connect();
 			for (String m : metrics) {
 				List<Info> resp = requestInfoList(m);
-				cache.put(m, resp);
 				notifyListeners(m, resp);
 				dbConn.insertList(m, resp);
 			}
@@ -172,7 +169,7 @@ public class ConnHandler {
 				}
 			}
 		}
-		
+
 		private void notifyNoData(String metric) {
 			if (dataListeners.containsKey(metric)) {
 				for (DataListener i : dataListeners.get(metric)) {
