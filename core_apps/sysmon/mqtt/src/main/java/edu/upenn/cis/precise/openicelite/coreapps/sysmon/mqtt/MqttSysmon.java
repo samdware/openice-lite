@@ -36,6 +36,8 @@ public class MqttSysmon implements ISysmon {
 	private long interval;
 	private Timer timer;
 
+	// default constructor for testing
+	protected MqttSysmon() {};
 
 	public MqttSysmon(Properties properties) {
 	    init(properties);
@@ -66,9 +68,9 @@ public class MqttSysmon implements ISysmon {
         dbConn.disconnect();
     }
 
-	private void setInterval(long interval) {
+	protected void setInterval(long interval) {
 		if (interval <= 0) {
-			throw new IllegalArgumentException("Interval must be greater than zero");
+			throw new IllegalArgumentException("Collection interval must be greater than zero");
 		}
 		this.interval = interval;
 		logger.info("Collection interval changed to {}", interval);
@@ -89,17 +91,26 @@ public class MqttSysmon implements ISysmon {
 
 	@Override
 	public void addMonitor(String metric) {
-		// TODO: verify validity of metric
+	    if (!enumMap.containsValue(metric)) {
+	        throw new IllegalArgumentException("Unsupported metric: " + metric);
+        }
 		metrics.add(metric);
 		logger.info("Started monitoring {}", metric);
 	}
 
     @Override
     public void addMonitor(Metric metric) {
+	    if (!enumMap.containsKey(metric)) {
+	        throw new IllegalArgumentException("Unsupported metric");
+        }
 	    addMonitor(enumMap.get(metric));
     }
+
     @Override
     public void addListener(String metric, Listener listener) {
+	    if (!enumMap.containsValue(metric)) {
+	        throw new IllegalArgumentException("Unsupported metric");
+        }
         if (listener instanceof DataListener) {
             addDataListener(metric, (DataListener) listener);
         } else if (listener instanceof EventListener) {
@@ -109,6 +120,9 @@ public class MqttSysmon implements ISysmon {
 
     @Override
     public void addListener(Metric metric, Listener listener) {
+	    if (!enumMap.containsKey(metric)) {
+	        throw new IllegalArgumentException("Unsupported metric");
+        }
 	    addListener(enumMap.get(metric), listener);
     }
 
@@ -134,6 +148,11 @@ public class MqttSysmon implements ISysmon {
 		logger.info("EventListener attached to {}", metric);
 	}
 
+    /**
+     * Sends a request to the broker for the specified metrics.
+     * @param metric Metric to request
+     * @return Metrics received from the broker
+     */
 	private List<Info> requestInfoList(String metric) {
 		List<Info> result = new ArrayList<>();
 		JsonArray array;
@@ -152,7 +171,6 @@ public class MqttSysmon implements ISysmon {
 	}
 
 	private class GetDataTask extends TimerTask {
-
 		@Override
 		public void run() {
 		    logger.info("Requesting metrics from broker");
