@@ -25,14 +25,15 @@ public class HttpConn {
 	private CloseableHttpClient client;
 	private String brokerAddr;
 	private int port;
-	
-	public HttpConn(String host, int port) {
+
+	// TODO: plaintext credentials??
+	public HttpConn(String host, int port, String user, String password) {
 		this.brokerAddr = "http://" + host + ":" + port + "/api/";
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
                 new AuthScope(host, port),
                 // TODO: change default credentials
-                new UsernamePasswordCredentials("guest", "guest"));
+                new UsernamePasswordCredentials(user, password));
         client = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();

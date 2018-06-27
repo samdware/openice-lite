@@ -36,8 +36,10 @@ public class ConnHandler {
 	    int port = Integer.parseInt(properties.getProperty("port", "15672"));
 	    String dbFile = properties.getProperty("db", "logs/metrics.db");
 	    int interval = Integer.parseInt(properties.getProperty("interval", "5000"));
+        String user = properties.getProperty("user","guest");
+        String password = properties.getProperty("password", "guest");
 
-	    conn = new HttpConn(host, port);
+	    conn = new HttpConn(host, port, user, password);
 	    dbConn = new DbConn(dbFile);
 	    createTables();
 	    metrics = new ArrayList<>();
@@ -132,6 +134,10 @@ public class ConnHandler {
 		JsonArray array;
 		try {
 			array = conn.get(metric).getAsJsonArray();
+			if (array == null) {
+			    // means that no data was returned from the server
+                return null;
+            }
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error("Error while communicating with broker: ", e);
@@ -149,8 +155,12 @@ public class ConnHandler {
 		    dbConn.connect();
 			for (String m : metrics) {
 				List<Info> resp = requestInfoList(m);
-				notifyListeners(m, resp);
-				dbConn.insertList(m, resp);
+				if (resp == null) {
+				    notifyNoData("metric");
+                } else {
+                    notifyListeners(m, resp);
+                    dbConn.insertList(m, resp);
+                }
 			}
 			dbConn.disconnect();
 		}
