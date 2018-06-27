@@ -7,15 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.DataListener;
-import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.ISysmon;
-import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.Info;
-import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.ChannelInfo;
-import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.ConnectionInfo;
+import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.*;
 import edu.upenn.cis.precise.openicelite.coreapps.sysmon.mqtt.MqttSysmon;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,9 +27,9 @@ public class Main extends Application {
 	BorderPane borderPane;
 	ISysmon sysmon;
 	
-	ConnectionDetailPane connectionPane;
-	ChannelDetailPane channelPane;
-	
+	DetailPane connectionPane;
+	DetailPane channelPane;
+
 	List<Info> connections;
 	List<Info> channels;
     ListView<String> connectionList, channelList, topicList;
@@ -55,8 +50,8 @@ public class Main extends Application {
         channelList = addTab("Channels", tabPane);
         //topicList = addTab("Topics", tabPane);
 
-        connectionPane = new ConnectionDetailPane();
-        channelPane = new ChannelDetailPane();
+        connectionPane = new DetailPane(MetricType.CONNECTIONS);
+        channelPane = new DetailPane(MetricType.CHANNELS);
         borderPane.setCenter(connectionPane);
                 
         // bind to take available space
@@ -107,7 +102,7 @@ public class Main extends Application {
 	}
 	
 	private ObservableList<String> extractNames(List<Info> list) {
-		List<String> names = new ArrayList<String>();
+		List<String> names = new ArrayList<>();
 		for (Info i : list) {
 			names.add(i.getAsString("name"));
 		}
@@ -121,12 +116,9 @@ public class Main extends Application {
         ListView<String> list = new ListView<>();
         list.setOrientation(Orientation.VERTICAL);
         list.getSelectionModel().selectedIndexProperty().addListener(
-        		new ChangeListener<Number>() {
-					@Override
-					public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 						updateDetailPanel(newValue.intValue(), tabName);
-					}
-        		});
+                });
         
         connTab.setContent(list);
         pane.getTabs().add(connTab);
@@ -136,10 +128,10 @@ public class Main extends Application {
 	private void updateDetailPanel(int index, String tabName) {
 		if (index < 0) return;
 		if ("Connections".equals(tabName) && index < connections.size()) {
-			connectionPane.updatePane((ConnectionInfo)connections.get(index));
+			connectionPane.updatePane(connections.get(index));
 			borderPane.setCenter(connectionPane);
 		} else if ("Channels".equals(tabName) && index < channels.size()) {
-			channelPane.updatePane((ChannelInfo)channels.get(index));
+			channelPane.updatePane(channels.get(index));
 			borderPane.setCenter(channelPane);
 		}
 	}

@@ -53,10 +53,10 @@ public class DbConn {
                 + " state text, \n"
                 + " ssl text, \n"
                 + " channels integer, \n"
-                + " recv_rate real, \n"
-                + " recv_count integer, \n"
-                + " send_rate real, \n"
-                + " send_count integer \n"
+                + " recv_oct_rate real, \n"
+                + " recv_oct_count integer, \n"
+                + " send_oct_rate real, \n"
+                + " send_oct_count integer \n"
                 + ");";
         try {
             Statement st = conn.createStatement();
@@ -72,7 +72,7 @@ public class DbConn {
      */
     protected void insertConnectionInfo(ConnectionInfo info) {
        String sql = "INSERT INTO connections(time, name, username, state, ssl, channels,"
-               + "recv_rate, recv_count, send_rate, send_count)"
+               + "recv_oct_rate, recv_oct_count, send_oct_rate, send_oct_count)"
                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
        try {
            PreparedStatement pst = conn.prepareStatement(sql);
@@ -82,10 +82,10 @@ public class DbConn {
            pst.setString(4, info.getAsString("state"));
            pst.setString(5, info.getAsString("ssl"));
            pst.setLong  (6, info.getAsLong("channels"));
-           pst.setDouble(7, info.getAsDouble("recv_rate"));
-           pst.setLong  (8, info.getAsLong("recv_count"));
-           pst.setDouble(9, info.getAsDouble("send_rate"));
-           pst.setLong  (10, info.getAsLong("send_count"));
+           pst.setDouble(7, info.getAsDouble("recv_oct_rate"));
+           pst.setLong  (8, info.getAsLong("recv_oct_count"));
+           pst.setDouble(9, info.getAsDouble("send_oct_rate"));
+           pst.setLong  (10, info.getAsLong("send_oct_count"));
            pst.execute();
        } catch (SQLException e) {
            logger.error("Error while inserting to table connections", e);

@@ -9,7 +9,7 @@ public class ConnectionInfo extends Info{
 
 	public static final String[] required = {
 			"time", "name", "username", "state", "ssl", "channels",
-           "recv_rate", "recv_count", "send_rate", "send_count"
+           "recv_oct_rate", "recv_oct_count", "send_oct_rate", "send_oct_count"
 	};
 	
 	public ConnectionInfo() {

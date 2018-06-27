@@ -19,8 +19,6 @@ import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.Info;
  */
 public class ConnHandler {
 
-    public static final String DB_LOCATION = "logs/metrics.db";
-
 	private static Logger logger = LogManager.getLogger(ConnHandler.class);
 
 	private HttpConn conn;
