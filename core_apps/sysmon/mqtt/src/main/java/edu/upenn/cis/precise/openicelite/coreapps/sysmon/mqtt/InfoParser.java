@@ -15,7 +15,12 @@ public class InfoParser {
     private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static LocalDateTime time;
 
-
+    /**
+     * Parses an array of json objects into a list of Info objects.
+     * @param metric Metric to use when parsing the array
+     * @param array Json array to parse
+     * @return List of parsed Info objects
+     */
     protected static List<Info> parseList(String metric, JsonArray array) {
         List<Info> result = new ArrayList<>();
         Iterator<JsonElement> it = array.iterator();
@@ -31,6 +36,11 @@ public class InfoParser {
         return result;
     }
 
+    /**
+     * Parses a single json object into a ConnectionInfo
+     * @param object Json object to parse
+     * @return ConnectionInfo holding the parsed information
+     */
     private static ConnectionInfo parseConnection(JsonObject object) {
         ConnectionInfo result = new ConnectionInfo();
         result.add("time",     timeFormatter.format(time));
@@ -45,6 +55,11 @@ public class InfoParser {
         return result;
     }
 
+    /**
+     * Parses a single json object into a ChannelInfo
+     * @param object Json object to parse
+     * @return ChannelInfo holding the parsed information
+     */
     private static ChannelInfo parseChannel(JsonObject object) {
         ChannelInfo result = new ChannelInfo();
         result.add("time",     timeFormatter.format(time));

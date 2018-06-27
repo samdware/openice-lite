@@ -40,7 +40,6 @@ public class Main extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, 800, 500);
         borderPane = new BorderPane();
-        sysmon = new MqttSysmon();
         sysmonSetup();
 
         TabPane tabPane = new TabPane();
@@ -73,7 +72,7 @@ public class Main extends Application {
 	        System.out.println(configFile.getAbsolutePath());
 	        e.printStackTrace();
         }
-        sysmon.init(p);
+        sysmon = new MqttSysmon(p);
 		sysmon.addMonitor("connections");
 		sysmon.addMonitor("channels");
 		sysmon.addListener("connections", new DataListener() {

@@ -26,20 +26,6 @@ public interface ISysmon {
     void stop();
 
     /**
-     * Changes the specified options to the given value. Adds the option if it doesn't exist.
-     * @param optionName Option to change
-     * @param value New value of the given option
-     */
-	void setOption(String optionName, String value);
-
-    /**
-     * Returns the value of the given option, or null if no such option exists.
-     * @param optionName Name of the option to find
-     * @return
-     */
-	String getOption(String optionName);
-
-    /**
      * Adds the given metric to the list of metrics to request on the next interval.
      * @param metric Name of the metric to request
      */

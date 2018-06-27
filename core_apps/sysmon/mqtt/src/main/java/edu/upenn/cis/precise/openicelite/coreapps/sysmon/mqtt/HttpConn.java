@@ -32,7 +32,6 @@ public class HttpConn {
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
                 new AuthScope(host, port),
-                // TODO: change default credentials
                 new UsernamePasswordCredentials(user, password));
         client = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
@@ -40,9 +39,9 @@ public class HttpConn {
 	}
 	
 	/**
-	 * Requests the metric to the monitoring api
-	 * @param metric Name/path of metric to request. ex) connections
-	 * @return Pretty-printed string of the json response
+	 * Sends a GET request for the specified metric to the broker
+	 * @param metric Metric to request
+	 * @return Json response from the broker, or null if no json was received.
 	 * @throws IOException
 	 */
 	public JsonElement get(String metric) throws IOException {
@@ -50,7 +49,6 @@ public class HttpConn {
 		CloseableHttpResponse response1 = client.execute(getReq);
 		StatusLine status = response1.getStatusLine();
 		
-		System.out.println(status);
 		if (status.getStatusCode() != 200) {
 			logger.warn("No metric received: {} {}", status.getStatusCode(), status.getReasonPhrase());
 			return null;
