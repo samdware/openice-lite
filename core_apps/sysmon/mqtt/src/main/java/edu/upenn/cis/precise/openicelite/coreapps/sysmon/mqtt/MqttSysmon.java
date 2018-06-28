@@ -18,7 +18,7 @@ import com.google.gson.JsonArray;
 public class MqttSysmon implements ISysmon {
 
 	private static Logger logger = LogManager.getLogger(MqttSysmon.class);
-    private static final Map<Metric, String> enumMap = Collections.unmodifiableMap(
+    static final Map<Metric, String> enumMap = Collections.unmodifiableMap(
             new HashMap<Metric, String>() {{
                 put(MetricType.CHANNELS, "channels");
                 put(MetricType.CONNECTIONS, "connections");

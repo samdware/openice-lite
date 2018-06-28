@@ -1,0 +1,64 @@
+{
+  "reductions_details": {
+    "rate": 0.0
+  },
+  "reductions": 191697,
+  "message_stats": {
+    "deliver_get_details": {
+      "rate": 0.2
+    },
+    "deliver_get": 735,
+    "ack_details": {
+      "rate": 0.2
+    },
+    "ack": 735,
+    "redeliver_details": {
+      "rate": 0.0
+    },
+    "redeliver": 0,
+    "deliver_no_ack_details": {
+      "rate": 0.0
+    },
+    "deliver_no_ack": 0,
+    "deliver_details": {
+      "rate": 0.2
+    },
+    "deliver": 735,
+    "get_no_ack_details": {
+      "rate": 0.0
+    },
+    "get_no_ack": 0,
+    "get_details": {
+      "rate": 0.0
+    },
+    "get": 0
+  },
+  "user_who_performed_action": "guest",
+  "vhost": "/",
+  "user": "guest",
+  "number": 1,
+  "name": "127.0.0.1:6532 -\u003e 127.0.0.1:1883 (1)",
+  "node": "rabbit@DESKTOP-QJPD4FH",
+  "connection_details": {
+    "peer_host": "127.0.0.1",
+    "peer_port": 6532,
+    "name": "127.0.0.1:6532 -\u003e 127.0.0.1:1883"
+  },
+  "garbage_collection": {
+    "minor_gcs": 353,
+    "fullsweep_after": 65535,
+    "min_heap_size": 233,
+    "min_bin_vheap_size": 46422,
+    "max_heap_size": 0
+  },
+  "state": "running",
+  "global_prefetch_count": 0,
+  "prefetch_count": 10,
+  "acks_uncommitted": 0,
+  "messages_uncommitted": 0,
+  "messages_unconfirmed": 0,
+  "messages_unacknowledged": 0,
+  "consumer_count": 1,
+  "confirm": false,
+  "transactional": false
+}

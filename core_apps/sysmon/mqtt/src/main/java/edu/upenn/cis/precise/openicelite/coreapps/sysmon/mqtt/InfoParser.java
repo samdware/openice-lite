@@ -22,17 +22,23 @@ public class InfoParser {
      * @return List of parsed Info objects
      */
     protected static List<Info> parseList(String metric, JsonArray array) {
+        if (!MqttSysmon.enumMap.containsValue(metric)) {
+            throw new IllegalArgumentException("Unsupported metric");
+        }
         List<Info> result = new ArrayList<>();
         Iterator<JsonElement> it = array.iterator();
         time = LocalDateTime.now();
         while (it.hasNext()) {
-            JsonObject object = it.next().getAsJsonObject();
-            if (metric.equals("connections")) {
-                result.add(parseConnection(object));
-            } else if (metric.equals("channels")) {
-                result.add(parseChannel(object));
+            JsonElement e = it.next();
+            if (e.isJsonObject()) {
+                JsonObject object = e.getAsJsonObject();
+                if (metric.equals("connections")) {
+                    result.add(parseConnection(object));
+                } else if (metric.equals("channels")) {
+                    result.add(parseChannel(object));
+                }
             }
-        };
+        }
         return result;
     }
 

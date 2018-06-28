@@ -1,0 +1,45 @@
+{
+  "reductions_details": {
+    "rate": 137.2
+  },
+  "reductions": 595869,
+  "recv_oct_details": {
+    "rate": 0.0
+  },
+  "recv_oct": 202,
+  "send_oct_details": {
+    "rate": 1.8
+  },
+  "send_oct": 6438,
+  "ssl": false,
+  "client_properties": {},
+  "frame_max": 0,
+  "channel_max": 1,
+  "channels": 1,
+  "variable_map": {
+    "client_id": "TestClient_sub1530210839307"
+  },
+  "user_who_performed_action": "guest",
+  "node": "rabbit@DESKTOP-QJPD4FH",
+  "connected_at": 1530210839389,
+  "type": "direct",
+  "vhost": "/",
+  "user": "guest",
+  "peer_port": 6532,
+  "peer_host": "127.0.0.1",
+  "name": "127.0.0.1:6532 -\u003e 127.0.0.1:1883",
+  "port": 1883,
+  "host": "127.0.0.1",
+  "protocol": "MQTT 3.1.1",
+  "state": "running",
+  "garbage_collection": {
+    "minor_gcs": 448,
+    "fullsweep_after": 65535,
+    "min_heap_size": 233,
+    "min_bin_vheap_size": 46422,
+    "max_heap_size": 0
+  },
+  "send_pend": 0,
+  "send_cnt": 793,
+  "recv_cnt": 78
+}
