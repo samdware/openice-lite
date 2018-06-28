@@ -80,7 +80,7 @@ public class Main extends Application {
 			public void onNotAvailable() {}
 			@Override
 			public void handleData(List<Info> data) {
-                    connections = data;
+                connections = data;
 				ObservableList<String> names = extractNames(data);
 				Platform.runLater(()->connectionList.setItems(names));
 			}

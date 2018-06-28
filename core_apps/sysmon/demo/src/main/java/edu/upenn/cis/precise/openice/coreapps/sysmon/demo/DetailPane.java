@@ -8,11 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailPane extends GridPane {
+    private Metric metric;
     private String[] fields;
     private List<Label> labels;
+    private RateLineChart chart;
 
     public DetailPane(Metric metric) {
         super();
+        this.metric = metric;
+        chart = new RateLineChart();
+        labels = new ArrayList<>();
+
         if (MetricType.CONNECTIONS.equals(metric)) {
             fields = ConnectionInfo.required;
         } else if (MetricType.CHANNELS.equals(metric)) {
@@ -20,8 +26,11 @@ public class DetailPane extends GridPane {
         } else {
             fields = new String[0];
         }
-        labels = new ArrayList<>();
         addLabels();
+
+        chart.addLine("Send");
+        chart.addLine("Recv");
+        this.add(chart.getNode(), 3, 0);
     }
 
     private void addLabels() {
@@ -36,6 +45,13 @@ public class DetailPane extends GridPane {
     protected void updatePane(Info info) {
         for (int i = 0; i < fields.length; i++) {
             labels.get(i).setText(info.getAsString(fields[i]));
+        }
+        if (metric.equals(MetricType.CONNECTIONS)) {
+            chart.addData("Send", info.getAsString("time"), info.getAsDouble("send_oct_rate"));
+            chart.addData("Recv", info.getAsString("time"), info.getAsDouble("recv_oct_rate"));
+        } else if (metric.equals(MetricType.CHANNELS)) {
+            chart.addData("Send", info.getAsString("time"), info.getAsDouble("publish_rate"));
+            chart.addData("Recv", info.getAsString("time"), info.getAsDouble("ack_rate"));
         }
     }
 }
