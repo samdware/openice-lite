@@ -19,15 +19,18 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-public class HttpConn {
+class HttpConn {
 	private static Logger logger = LogManager.getLogger(HttpConn.class);
 	
 	private CloseableHttpClient client;
 	private String brokerAddr;
-	private int port;
 
 	// TODO: plaintext credentials??
-	public HttpConn(String host, int port, String user, String password) {
+	protected HttpConn(String host, int port, String user, String password) {
+	    if (host == null) throw new NullPointerException("Host may not be null");
+	    if (user == null) throw new NullPointerException("Username may not be null");
+	    if (port < 0 || port > 65535) throw new IllegalArgumentException("Port must be between 0 and 65535");
+
 		this.brokerAddr = "http://" + host + ":" + port + "/api/";
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
@@ -44,7 +47,8 @@ public class HttpConn {
 	 * @return Json response from the broker, or null if no json was received.
 	 * @throws IOException
 	 */
-	public JsonElement get(String metric) throws IOException {
+	protected JsonElement get(String metric) throws IOException {
+	    if (metric == null) throw new NullPointerException("Metric may not be null");
 		HttpGet getReq = new HttpGet(brokerAddr + metric);
 		CloseableHttpResponse response1 = client.execute(getReq);
 		StatusLine status = response1.getStatusLine();
