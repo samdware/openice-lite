@@ -22,8 +22,6 @@ public class MqttSysmon implements ISysmon {
             new HashMap<Metric, String>() {{
                 put(MetricType.CHANNELS, "channels");
                 put(MetricType.CONNECTIONS, "connections");
-                put(MetricType.TOPICS, "topics");
-                put(MqttMetricType.VHOSTS, "vhosts");
             }}
     );
 
