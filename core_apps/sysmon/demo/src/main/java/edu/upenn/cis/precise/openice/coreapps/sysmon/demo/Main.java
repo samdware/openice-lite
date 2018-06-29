@@ -32,7 +32,7 @@ public class Main extends Application {
 
 	List<Info> connections;
 	List<Info> channels;
-    ListView<String> connectionList, channelList, topicList;
+    ListView<String> connectionList, channelList;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -47,7 +47,6 @@ public class Main extends Application {
         
         connectionList = addTab("Connections", tabPane);
         channelList = addTab("Channels", tabPane);
-        //topicList = addTab("Topics", tabPane);
 
         connectionPane = new DetailPane(MetricType.CONNECTIONS);
         channelPane = new DetailPane(MetricType.CHANNELS);
