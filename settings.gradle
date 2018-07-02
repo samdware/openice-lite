@@ -16,4 +16,3 @@ include ':middleware:mqtt'
 
 // Core apps
 include ':core_apps:sysmon:mqtt'
-include ':core_apps:sysmon:demo'
