@@ -25,7 +25,6 @@ class HttpConn {
 	private CloseableHttpClient client;
 	private String brokerAddr;
 
-	// TODO: plaintext credentials??
 	protected HttpConn(String host, int port, String user, String password) {
 	    if (host == null) throw new NullPointerException("Host may not be null");
 	    if (user == null) throw new NullPointerException("Username may not be null");

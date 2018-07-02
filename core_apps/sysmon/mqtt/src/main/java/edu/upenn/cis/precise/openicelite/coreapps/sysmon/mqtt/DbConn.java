@@ -12,24 +12,28 @@ import java.util.List;
 public class DbConn {
     private static Logger logger = LogManager.getLogger(DbConn.class);
 
-    private Connection conn = null;
-    private DatabaseMetaData meta = null;
+    private Connection conn;
     private String url;
 
     protected DbConn(String fileName) {
         this.url = "jdbc:sqlite:" + fileName;
     }
 
+    /**
+     * Connects to the database file
+     */
     protected void connect() {
         try {
             conn = DriverManager.getConnection(url);
             logger.info("Connection to db established: {}]", url);
-            meta = conn.getMetaData();
         } catch (SQLException e) {
             logger.error("Error connecting to database ", e);
         }
     }
 
+    /**
+     * Disconnects from the database file.
+     */
     protected void disconnect() {
         try {
             if (conn != null) {
@@ -172,6 +176,11 @@ public class DbConn {
         }
     }
 
+    /**
+     * Convenience methods to insert a list of Info
+     * @param m Name of metric that the list holds
+     * @param infoList List to insert
+     */
     protected void insertList(String m, List<Info> infoList) {
         if ("connections".equals(m)) {
             insertConnectionList(infoList);

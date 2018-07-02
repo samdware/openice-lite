@@ -16,7 +16,7 @@ public interface ISysmon {
     void init(Properties properties);
 
     /**
-     * Starts to receive system metrics periodically.
+     * Start receiving system metrics periodically.
      */
     void start();
 

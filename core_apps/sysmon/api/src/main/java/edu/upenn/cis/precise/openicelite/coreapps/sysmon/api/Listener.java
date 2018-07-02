@@ -6,5 +6,9 @@ package edu.upenn.cis.precise.openicelite.coreapps.sysmon.api;
  * @author Hyun Jung (hyju@seas.upenn.edu)
  */
 public interface Listener {
+
+    /**
+     * Called when no data is available for the requested metric.
+     */
 	void onNotAvailable();
 }

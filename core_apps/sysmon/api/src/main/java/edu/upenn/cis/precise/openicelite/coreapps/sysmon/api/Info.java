@@ -95,7 +95,7 @@ public class Info {
      * Returns all data in this Info as a map.
      * @return Map representation of all data
      */
-	public Map<String, Object> getAll() {
+	public Map<String, Object> getMap() {
 	    return Collections.unmodifiableMap(content);
     }
  

@@ -11,11 +11,7 @@ public class ConnectionInfo extends Info{
 			"time", "name", "username", "state", "ssl", "channels",
            "recv_oct_rate", "recv_oct_count", "send_oct_rate", "send_oct_count"
 	};
-	
-	public ConnectionInfo() {
-		// TODO Auto-generated constructor stub
-	}
-	
+
 	@Override
 	public String[] requiredFields() {
 		return required;
