@@ -1,3 +1,5 @@
+edu.upenn.cis.precise.openicelite.coreapps.sysmon.api
+edu.upenn.cis.precise.openicelite.coreapps.sysmon.mqtt
 edu.upenn.cis.precise.openicelite.iomt.api
 edu.upenn.cis.precise.openicelite.middleware.api
 edu.upenn.cis.precise.openicelite.middleware.mqtt

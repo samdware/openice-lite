@@ -3,6 +3,7 @@ package edu.upenn.cis.precise.openice.coreapps.sysmon.demo;
 import edu.upenn.cis.precise.openicelite.coreapps.sysmon.api.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class DetailPane extends GridPane {
         super();
         this.metric = metric;
         chart = new RateLineChart();
+        //chart.fixHeight(this.heightProperty().multiply(0.3333));
         labels = new ArrayList<>();
 
         if (MetricType.CONNECTIONS.equals(metric)) {
@@ -30,7 +32,7 @@ public class DetailPane extends GridPane {
 
         chart.addLine("Send");
         chart.addLine("Recv");
-        this.add(chart.getNode(), 3, 0);
+        this.add(chart.getNode(), 3, 0, 10, 5);
     }
 
     private void addLabels() {
@@ -42,17 +44,20 @@ public class DetailPane extends GridPane {
         }
     }
 
-    protected void updatePane(Info info) {
+    protected void updatePane(Info info, List<Pair<String, Double>> sendList, List<Pair<String, Double>> recvList) {
         for (int i = 0; i < fields.length; i++) {
             labels.get(i).setText(info.getAsString(fields[i]));
         }
-        if (metric.equals(MetricType.CONNECTIONS)) {
-            chart.addData("Send", info.getAsString("time"), info.getAsDouble("send_oct_rate"));
-            chart.addData("Recv", info.getAsString("time"), info.getAsDouble("recv_oct_rate"));
-        } else if (metric.equals(MetricType.CHANNELS)) {
-            chart.addData("Send", info.getAsString("time"), info.getAsDouble("publish_rate"));
-            chart.addData("Recv", info.getAsString("time"), info.getAsDouble("ack_rate"));
-        }
+
+        chart.addDataList("Send", sendList);
+        chart.addDataList("Recv", recvList);
+        //if (metric.equals(MetricType.CONNECTIONS)) {
+        //    chart.addData("Send", info.getAsString("time"), info.getAsDouble("send_oct_rate"));
+        //    chart.addData("Recv", info.getAsString("time"), info.getAsDouble("recv_oct_rate"));
+        //} else if (metric.equals(MetricType.CHANNELS)) {
+        //    chart.addData("Send", info.getAsString("time"), info.getAsDouble("publish_rate"));
+        //    chart.addData("Recv", info.getAsString("time"), info.getAsDouble("ack_rate"));
+        //}
     }
 }
 

@@ -1,13 +1,17 @@
 package edu.upenn.cis.precise.openice.coreapps.sysmon.demo;
 
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RateLineChart {
@@ -26,6 +30,10 @@ public class RateLineChart {
         lineChart.setTitle("Message rates");
     }
 
+    void fixHeight(DoubleBinding height) {
+        lineChart.prefHeightProperty().bind(height);
+    }
+
     public void addLine(String name) {
         XYChart.Series s = new XYChart.Series();
         s.setName(name);
@@ -40,6 +48,14 @@ public class RateLineChart {
             dataList.remove(0);
         }
         dataList.add(new XYChart.Data<>(time, data));
+    }
+
+    public void addDataList(String name, List<Pair<String, Double>> data) {
+        XYChart.Series s = map.get(name);
+        s.getData().clear();
+        for (int i= data.size() < 10 ? 0 : data.size() - 10; i< data.size(); i++) {
+            s.getData().add(new XYChart.Data<>(data.get(i).getKey(), data.get(i).getValue()));
+        }
     }
 
     public Node getNode() {

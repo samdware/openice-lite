@@ -35,7 +35,7 @@ public class MqttSysmon implements ISysmon {
 	private Timer timer;
 
 	// default constructor for testing
-	protected MqttSysmon() {};
+	protected MqttSysmon() {}
 
 	public MqttSysmon(Properties properties) {
 	    init(properties);
@@ -193,7 +193,9 @@ public class MqttSysmon implements ISysmon {
 			}
 			if (eventListeners.containsKey(metric)) {
 				for (EventListener i : eventListeners.get(metric)) {
-					// TODO: do this
+				    if (i.apply(response)) {
+				    	i.onConditionMet(response);
+					}
 				}
 			}
 		}
